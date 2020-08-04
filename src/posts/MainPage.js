@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import { Button, Layout, PageHeader } from "antd";
-import { useFirebase } from "../firebase/useFirebase";
-import { Link } from "@reach/router";
-import CreatePost from "./CreatePost";
-import SinglePost from "./SinglePost";
+import React from 'react';
+import styled from 'styled-components';
+import { Button, Layout, PageHeader } from 'antd';
+import { useFirebase } from '../firebase/useFirebase';
+import { Link } from '@reach/router';
+import CreatePost from './CreatePost';
+import SinglePost from './SinglePost';
 
 const MainLayout = styled(Layout)`
   width: 100vw;
@@ -18,25 +18,25 @@ const Header = styled(PageHeader)`
 
 function MainPage() {
   const { user, signout, posts } = useFirebase();
-  const [display, setDisplay] = React.useState("default"); // default, create
+  const [display, setDisplay] = React.useState('default'); // default, create
 
   const onLogoutClick = () => {
     try {
       signout();
     } catch (error) {
-      console.log("error logging out");
+      console.log('error logging out');
     }
   };
 
   const onCreatePostClick = () => {
-    setDisplay("create");
+    setDisplay('create');
   };
 
   const onCancelClick = () => {
-    setDisplay("default");
+    setDisplay('default');
   };
 
-  if (display === "create") {
+  if (display === 'create') {
     return <CreatePost onCancelClick={onCancelClick} />;
   }
 
@@ -58,7 +58,6 @@ function MainPage() {
       </MainLayout>
     );
   }
-
   return (
     <MainLayout>
       <Header
@@ -72,8 +71,8 @@ function MainPage() {
           </Button>,
         ]}
       />
-      {posts.map((post) => (
-        <SinglePost post={post} />
+      {posts.map((post, index) => (
+        <SinglePost post={post} key={index + ' post'} />
       ))}
     </MainLayout>
   );

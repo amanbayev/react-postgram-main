@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { Form, Input, Button, Layout, PageHeader, message, Space } from "antd";
-import { useFirebase } from "../firebase/useFirebase";
+import React from 'react';
+import styled from 'styled-components';
+import { Form, Input, Button, Layout, PageHeader, message, Space } from 'antd';
+import { useFirebase } from '../firebase/useFirebase';
 
 const MainLayout = styled(Layout)`
   width: 100vw;
@@ -10,20 +10,19 @@ const MainLayout = styled(Layout)`
 `;
 
 const Header = styled(PageHeader)`
-  width: 1000px;
+  width: 600px;
 `;
 
 const MyForm = styled(Form)`
-  width: 1000px;
+  width: 600px;
 `;
 
 function CreatePost({ onCancelClick }) {
   const { post } = useFirebase();
 
   const onFormFinish = async (values) => {
-    console.log("got some values", values);
-    await post(values);
-    message.success("Saved your post!");
+    await post({ ...values, createdAt: new Date().toISOString() });
+    message.success('Saved your post!');
     onCancelClick();
   };
 
@@ -37,7 +36,7 @@ function CreatePost({ onCancelClick }) {
           rules={[
             {
               required: true,
-              message: "Please input title for the post",
+              message: 'Please input title for the post',
             },
           ]}
         >
@@ -46,6 +45,10 @@ function CreatePost({ onCancelClick }) {
 
         <Form.Item name="content" label="Content">
           <Input.TextArea />
+        </Form.Item>
+
+        <Form.Item name="url" label="Image URL">
+          <Input />
         </Form.Item>
 
         <Form.Item>

@@ -1,8 +1,8 @@
-import React from "react";
-import firebase from "firebase/app";
-import "firebase/database";
-import "firebase/auth";
-import { config } from "./config";
+import React from 'react';
+import firebase from 'firebase/app';
+import 'firebase/database';
+import 'firebase/auth';
+import { config } from './config';
 
 const firebaseContext = React.createContext();
 
@@ -13,27 +13,31 @@ function useProvideFirebase() {
 
   React.useEffect(() => {
     if (!firebase.apps.length) {
-      console.log("I am initializing new firebase app");
+      // console.log("I am initializing new firebase app");
       firebase.initializeApp(config);
     }
 
     const unsubscribeFunction = firebase.auth().onAuthStateChanged((user) => {
-      console.log("got new user", user);
+      // console.log("got new user", user);
       setUser(user);
     });
 
     firebase
       .database()
-      .ref("/posts")
-      .on("value", function (snapshot) {
-        console.log("value is ", Object.values(snapshot.val()));
-        setPosts(Object.values(snapshot.val()));
+      .ref('/posts')
+      .on('value', function (snapshot) {
+        // console.log("value is ", Object.values(snapshot.val()));
+        let posts = [];
+        for (let key in snapshot.val()) {
+          posts.push({ ...snapshot.val()[key], id: key });
+        }
+        setPosts(posts);
       });
 
     return function cleanup() {
       // looks like you don't need to do any clean up, but if you do, do it here
       unsubscribeFunction();
-      firebase.database().ref("/posts").off();
+      firebase.database().ref('/posts').off();
     };
   }, []);
 
@@ -50,7 +54,15 @@ function useProvideFirebase() {
   };
 
   const post = async (values) => {
-    await firebase.database().ref("posts").push(values);
+    await firebase.database().ref('posts').push(values);
+  };
+
+  const deletePostById = async (postId) => {
+    console.log('deleting post by id: ', postId);
+    await firebase
+      .database()
+      .ref('/posts/' + postId)
+      .remove();
   };
 
   return {
@@ -60,6 +72,7 @@ function useProvideFirebase() {
     login,
     signout,
     post,
+    deletePostById,
   };
 }
 
