@@ -5,6 +5,8 @@ import { useFirebase } from '../firebase/useFirebase';
 
 import { DeleteOutlined } from '@ant-design/icons';
 
+import { Link } from '@reach/router';
+
 import moment from 'moment';
 
 const MyCard = styled(Card)`
@@ -38,6 +40,10 @@ function SinglePost({ post }) {
           />
         </Col>
         <Col flex="auto" style={{ marginLeft: '32px' }}>
+          <h4>{post.displayName}</h4>
+          <h5>
+            <Link to={`/posts/${post.uid}`}>{post.email}</Link>
+          </h5>
           <div>{post.content}</div>
           <div style={{ marginTop: '16px' }}>
             <i>

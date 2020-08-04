@@ -54,11 +54,24 @@ function useProvideFirebase() {
   };
 
   const post = async (values) => {
-    await firebase.database().ref('posts').push(values);
+    if (!values.url) {
+      values.url = '';
+    }
+    // console.log(firebase.auth().currentUser);
+    const { uid, email, displayName } = firebase.auth().currentUser;
+    await firebase
+      .database()
+      .ref('posts')
+      .push({
+        ...values,
+        uid,
+        displayName,
+        email,
+      });
   };
 
   const deletePostById = async (postId) => {
-    console.log('deleting post by id: ', postId);
+    // console.log('deleting post by id: ', postId);
     await firebase
       .database()
       .ref('/posts/' + postId)

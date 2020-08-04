@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import { Form, Input, Button, Layout, message, PageHeader } from "antd";
-import { Link } from "@reach/router";
-import { useNavigate } from "@reach/router";
-import { useFirebase } from "../firebase/useFirebase";
+import React from 'react';
+import styled from 'styled-components';
+import { Form, Input, Button, Layout, message, PageHeader } from 'antd';
+import { Link } from '@reach/router';
+import { useNavigate } from '@reach/router';
+import { useFirebase } from '../firebase/useFirebase';
 
 const MainLayout = styled(Layout)`
   width: 100vw;
@@ -19,11 +19,11 @@ function Register() {
   const navigate = useNavigate();
 
   const onFormFinish = async (values) => {
-    console.log("values are", values);
+    // console.log("values are", values);
     try {
       await register(values.email, values.password);
-      message.success("Successfully registered");
-      navigate("/");
+      message.success('Successfully registered');
+      navigate('/');
     } catch (error) {
       message.error(error.message);
     }
@@ -40,8 +40,8 @@ function Register() {
           rules={[
             {
               required: true,
-              type: "email",
-              message: "Please input your email!",
+              type: 'email',
+              message: 'Please input your email!',
             },
           ]}
         >
@@ -54,7 +54,7 @@ function Register() {
           rules={[
             {
               required: true,
-              message: "Please input your password!",
+              message: 'Please input your password!',
             },
           ]}
         >
